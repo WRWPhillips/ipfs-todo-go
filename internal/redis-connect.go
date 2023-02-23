@@ -1,18 +1,16 @@
 package internal
 
-import(
-	"fmt"
-	"os"
+import (
 	"context"
+	"os"
 
-	"github.com/redis/go-redis/v9"
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 )
-
 
 var ctx = context.Background()
 
-func GetCID() string, err {
+func GetCID() (string, error) {
 	err := godotenv.Load("../.env")
 	if err != nil {
 		panic(err)
@@ -27,7 +25,7 @@ func GetCID() string, err {
 
 	rdb := redis.NewClient(opt)
 
-	return rdb.Get(ctx, "foo")
+	return rdb.Do(ctx, "get", "foo").Text()
 
-	//the cid of the todo should be consistently stored here, and we can get the cid on launch from it. 
+	//the cid of the todo should be consistently stored here, and we can get the cid on launch from it.
 }
