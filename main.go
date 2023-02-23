@@ -2,34 +2,23 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"context"
 
-	"github.com/redis/go-redis/v9"
-	"github.com/joho/godotenv"
+	"github.com/WRWPhillips/ipfs-todo-go/internal"
 	// "github.com/ipfs-todo-go/cmd"
 	// "github.com/gonuts/commander"
 )
 
 func main() {
-	ctx := context.Background()
 
-	err := godotenv.Load(".env")
+	cid, err = internal.GetCID()
+	if(err != nil) {
+		if err == redis.Nil {
+			fmt.Println("key does not exists")
+			return
+		}
+		panic(err)
+	}
+	fmt.Println(cid.(string))
 	
-	if err != nil {
-		panic(err)
-	}
-
-	redis_uri := os.Getenv("REDIS_URI")
-	fmt.Println("url ->", redis_uri)
-
-	opt, err := redis.ParseURL(redis_uri)
-	if err != nil {
-		panic(err)
-	}
-
-	rdb := redis.NewClient(opt)
-
-	get := rdb.Get(ctx, "foo")
-	fmt.Println(get.Val(), get.Err())
+	//the cid of the todo should be consistently stored here, and we can get the cid on launch from it. 
 }
