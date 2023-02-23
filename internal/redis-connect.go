@@ -11,7 +11,7 @@ import (
 var ctx = context.Background()
 
 func GetCID() (string, error) {
-	err := godotenv.Load("../.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		panic(err)
 	}
